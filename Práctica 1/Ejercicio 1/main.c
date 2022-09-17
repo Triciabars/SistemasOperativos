@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     /* Read file byte by byte */
     while ((c = fread(file)) != EOF) {
         /* Print byte to stdout */
-        ret=putc((unsigned char) c, stdout);
+        ret=fwrite((unsigned char) c, stdout);
         cont++;
         if (ret==EOF){
             fclose(file);

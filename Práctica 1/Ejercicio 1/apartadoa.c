@@ -15,7 +15,6 @@
 int main(int argc, char* argv[]) {
     FILE* file=NULL;
     int c,ret;
-    //int cont = 0;
     int buffer[10];//el buffer
 
     if (argc!=2) {
@@ -34,7 +33,7 @@ int main(int argc, char* argv[]) {
 
         if (ret==EOF){
             fclose(file);
-            err(3,"putc() failed!!");
+            err(3,"fwrite() failed!!");
         }
     }
 

@@ -13,14 +13,15 @@ int main(int argc, char* argv[]) {
         exit(1);
     }
 
-    //leer parametro por usuario
-    printf("Dime el numero de bytes:\n");
-    scanf("%d", &parametroUsuario); //parametro leido 
-    printf("El numero que pusiste fue: %d", parametroUsuario);
-
     /* Open file */
     if ((file = fopen(argv[1], "r")) == NULL)
         err(2,"The input file %s could not be opened",argv[1]);
+    
+    //leer parametro por usuario
+    printf("Dime el numero de bytes:\n");
+    scanf("%d", &parametroUsuario); //parametro leido 
+    while(!isdigit(parametroUsuario)) printf("Ingrese un número válido. \n>"); //comprobacion de que sea un digito
+    printf("El numero que pusiste fue: %d", parametroUsuario);
 
       /* Read file byte by byte */
     while ((c = fread(buffer, parametroUsuario, 1, file)) != EOF) {
@@ -29,17 +30,10 @@ int main(int argc, char* argv[]) {
 
         if (ret==EOF){
             fclose(file);
-            err(3,"putc() failed!!");
+            err(3,"fwrite() failed!!");
         }
     }
 
     fclose(file);
     return 0;
 }  
-
-
-/*
-VARIACION 
-
-
-*/

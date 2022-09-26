@@ -27,11 +27,11 @@ int main(int argc, char* argv[]) {
         err(2,"The input file %s could not be opened",argv[1]);
 
       /* Read file byte by byte */
-    while ((c = fread(buffer, 1, 1, file)) != EOF) {
+    while ((c = fread(buffer, 1, 1, file)) == 1) { //el ==1 no lo he entendido 
         /* Print byte to stdout */
-        ret=fwrite(buffer, 1, 1, file);
+        ret=fwrite(buffer, 1, 1, stdout); //stdout para que se escriba por pantalla, sino lee y vuelve a escribir lo mismo
 
-        if (ret==EOF){
+        if (ret==0){ //cuando se hayan escrito 0 bloques, porque significa que es el final del archivo
             fclose(file);
             err(3,"fwrite() failed!!");
         }

@@ -29,7 +29,8 @@ void sort(item *a, int n) {
                 *(p+1) = t;
                 s++;
             }
-            p++;
+            p = (p+1);
+            j++;
         } while ( j < n-1 );
     }
 }

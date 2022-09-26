@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
         err(2,"The input file %s could not be opened",argv[1]);
 
       /* Read file byte by byte */
-    while ((c = fread(buffer, 1, 1, file)) == 1) { //el ==1 no lo he entendido 
+    while ((c = fread(buffer, 1, 1, file)) == 1) { //el ==1 porque significa que ha leido 1 byte, si deja de leer seria 0 y acabaria el while
         /* Print byte to stdout */
         ret=fwrite(buffer, 1, 1, stdout); //stdout para que se escriba por pantalla, sino lee y vuelve a escribir lo mismo
 

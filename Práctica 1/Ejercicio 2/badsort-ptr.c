@@ -18,18 +18,19 @@ void sort(item *a, int n) {
     int s = 1;
     item* p;
 
-    for(; i < n & s != 0; i++) {
+    for(; (i < n)& (s != 0); i++) {
         s = 0;
         p = a;
-        j = n-1;
+        j = 0;
         do {
-            if( p->key > (p+1)->key) {
+            if( (p->key > (p+1)->key )) {
                 item t = *p;
                 *p  = *(p+1);
                 *(p+1) = t;
                 s++;
             }
-        } while ( --j >= 0 );
+            p++;
+        } while ( j < n-1 );
     }
 }
 

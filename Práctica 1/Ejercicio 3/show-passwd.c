@@ -1,3 +1,14 @@
+/* PREGUNTAS DE TEORÍA
+1.  ¿Cuál es el propósito de la función clone_string() que se usa para inicializar algunos de los citados campos tipo cadena? ¿Por qué no es posible en algunos casos simplemente
+copiar la cadena vía strcpy() o realizando una asignación campo=cadena_existente;? Justifique la respuesta.
+
+
+
+2. ¿Qué tipo de modificaciones sufre la cadena (variable line) tras invocaciones sucesivas de strsep()?
+
+
+*/
+
 #include <stdio.h>
 #include <unistd.h> /* for getopt() */
 #include <stdlib.h> /* for EXIT_SUCCESS, EXIT_FAILURE */
@@ -204,6 +215,10 @@ int main(int argc, char *argv[])
 				exit(EXIT_FAILURE);
 			}
 			break;
+		case 'i': //EJERCICIO 1
+		break;
+		case 'c': //EJERCICIO 2
+		break;
 		default:
 			exit(EXIT_FAILURE);
 		}

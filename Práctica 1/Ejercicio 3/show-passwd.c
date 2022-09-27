@@ -51,8 +51,8 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 	token_id_t token_id;
 	int entry_idx;
 
-	if ((passwd=fopen("/etc/passwd","r"))==NULL) {
-		fprintf(stderr, "/etc/passwd could not be opened: ");
+	if ((passwd=fopen(options.infile,"r"))==NULL) { //para ejercicio 1
+		fprintf(stderr, "file could not be opened: ");
 		perror(NULL);
 		return NULL;
 	}
@@ -76,7 +76,7 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 		token_id=LOGIN_NAME_IDX;
 		cur_entry=&entries[entry_idx];
 
-		while((token = strsep(&lineptr, ":"))!=NULL) {
+		while((token = strsep(&lineptr, options.spr))!=NULL) { //para ejercicio 2
 			switch(token_id) {
 			case LOGIN_NAME_IDX:
 				strcpy(cur_entry->login_name,token);
@@ -193,6 +193,8 @@ int main(int argc, char *argv[])
 	struct options options;
 
 	/* Initialize default values for options */
+	options.infile="/etc/passwd"; //Para ejercicio 1
+	options.spr=":"; //Para ejercicio 2
 	options.outfile=stdout;
 	options.output_mode=VERBOSE_MODE;
 
@@ -217,8 +219,10 @@ int main(int argc, char *argv[])
 			}
 			break;
 		case 'i': //EJERCICIO 1
+			options.infile=optarg;
 		break;
 		case 'c': //EJERCICIO 2
+			options.spr=",";
 		break;
 		default:
 			exit(EXIT_FAILURE);

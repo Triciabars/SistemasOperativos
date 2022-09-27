@@ -2,10 +2,11 @@
 1.  ¿Cuál es el propósito de la función clone_string() que se usa para inicializar algunos de los citados campos tipo cadena? ¿Por qué no es posible en algunos casos simplemente
 copiar la cadena vía strcpy() o realizando una asignación campo=cadena_existente;? Justifique la respuesta.
 
-
+El propósito es asignar memoria dinámica y agregarla al heap. Necesitamos la memoria dinámica porque muchas veces no disponemos del tamaño del dato exactamente, o queremos ampliarlo una vez inicializado.
+Con strcpy() o una signación a campo los datos se guardarían en la pila y tendríamos menos flexibilidad en cuanto al tamaño
 
 2. ¿Qué tipo de modificaciones sufre la cadena (variable line) tras invocaciones sucesivas de strsep()?
-
+La variable line no sufre ningún tipo de modificación, simplemente el puntero lineptr se va trasladando hacia la derecha hasta encontrar ':' y terminar con el fichero.
 
 */
 

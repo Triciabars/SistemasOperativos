@@ -3,7 +3,7 @@
 
 
 int main(){
-    FILE *f1; //puntero de tipo filee
+    FILE *f1; //puntero de tipo file
 
         //crear fichero
         f1 = fopen("database.dat", "wb"); //con wb hacemos que fopen cree el archivo binario

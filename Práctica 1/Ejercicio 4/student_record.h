@@ -9,7 +9,7 @@ typedef struct{
 
 /*
 FILE *file;
-//funcioon que acepta como parametro el listado de regsitros en formato ASCII
+//funcion que acepta como parametro el listado de regsitros en formato ASCII
 //asi como el numero de registros y devuelve la representacion binaria de los mismos hecho con malloc()
 student_t* parse_records(char* records[], int nr_records);
 

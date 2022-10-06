@@ -50,7 +50,6 @@ struct options {
 	FILE* outfile;
 	char* infile;
 	output_mode_t output_mode;
-	char spr;
 };
 
 #endif

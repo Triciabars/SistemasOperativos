@@ -76,7 +76,7 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 		token_id=LOGIN_NAME_IDX;
 		cur_entry=&entries[entry_idx];
 
-		while((token = strsep(&lineptr, options.spr))!=NULL) { //para ejercicio 2
+		while((token = strsep(&lineptr, ":"))!=NULL) { 
 			switch(token_id) {
 			case LOGIN_NAME_IDX:
 				strcpy(cur_entry->login_name,token);
@@ -89,7 +89,15 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 					fprintf(stderr, "Couldn't parse UID field in line %d of /etc/passwd. token is %s\n",entry_idx+1, token);
 					return NULL;
 				}
-			2
+				break;
+			case GID_IDX:
+				if (sscanf(token,"%d",&cur_entry->gid)!=1) {
+					fprintf(stderr, "Couldn't parse GID field in line %d of /etc/passwd. token is %s\n",entry_idx+1, token);
+					return NULL;
+				}
+				break;
+			case USER_NAME_IDX:
+				cur_entry->user_name=clone_string(token);
 				break;
 			case USER_HOME_IDX:
 				cur_entry->user_home=clone_string(token);
@@ -167,6 +175,12 @@ static int show_passwd(struct options* options)
 			        e->uid, e->gid,e->user_name,
 			        e->user_home, e->user_shell);
 			break;
+		case COMAS_MODE:
+			fprintf(options->outfile,",%s,%s,%d,%d,%s,%s,%s,\n",
+			        e->login_name, e->optional_encrypted_passwd,
+			        e->uid, e->gid,e->user_name,
+			        e->user_home, e->user_shell);
+			break;
 		case PIPE_MODE:
 			fprintf(options->outfile,"|%s|%s|%d|%d|%s|%s|%s|\n",
 			        e->login_name, e->optional_encrypted_passwd,
@@ -186,7 +200,6 @@ int main(int argc, char *argv[])
 
 	/* Initialize default values for options */
 	options.infile="/etc/passwd"; //Para ejercicio 1
-	options.spr=":"; //Para ejercicio 2
 	options.outfile=stdout;
 	options.output_mode=VERBOSE_MODE;
 
@@ -212,10 +225,10 @@ int main(int argc, char *argv[])
 			break;
 		case 'i': //EJERCICIO 1
 			options.infile=optarg;
-		break;
+			break;
 		case 'c': //EJERCICIO 2
-			options.spr=",";
-		break;
+			options.output_mode=COMAS_MODE;
+			break;
 		default:
 			exit(EXIT_FAILURE);
 		}

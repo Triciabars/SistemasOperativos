@@ -1,16 +1,17 @@
 CC = gcc
 CFLAGS = -Wall -g
 
-PROG = badsort-ptr
+PROG = show-passwd
+HEADERS = defs.h
 OBJECTS = $(PROG).o
 
-all : $(PROG) 
+all : $(PROG)
 
 $(PROG) : $(OBJECTS)
 	gcc -g -o $(PROG) $(OBJECTS)
-	
-%.o : %.c 
+
+%.o : %.c $(HEADERS)
 	gcc -c $(CFLAGS) $< -o $@
 
 clean :
-	-rm -f $(OBJECTS) $(PROG) 
+	-rm -f $(OBJECTS) $(PROG)

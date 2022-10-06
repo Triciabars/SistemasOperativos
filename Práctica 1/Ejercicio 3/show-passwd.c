@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
 	options.output_mode=VERBOSE_MODE;
 
 	/* Parse command-line options */
-	while((opt = getopt(argc, argv, "hvpo:")) != -1) {
+	while((opt = getopt(argc, argv, "hvpoic:")) != -1) {
 		switch(opt) {
 		case 'h':
 			fprintf(stderr,"Usage: %s [ -h | -v | -p | -o <output_file> | -i <inputfile> | -c ]\n",argv[0]);

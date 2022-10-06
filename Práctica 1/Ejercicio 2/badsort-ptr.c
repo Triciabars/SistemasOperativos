@@ -3,7 +3,7 @@
 typedef struct {
     char data[4096];
     int key;
-} item;
+} item; 
 
 item array[] = {
     {"bill", 3},

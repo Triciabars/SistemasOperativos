@@ -18,7 +18,7 @@ void sort(item *a, int n) {
     int s = 1;
     item* p;
 
-    for(; (i < n)& (s != 0); i++) {
+    for(; (i < n)& (s != 0); i++){
         s = 0;
         p = a;
         j = 0;

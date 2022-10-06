@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
 	while((opt = getopt(argc, argv, "hvpo:")) != -1) {
 		switch(opt) {
 		case 'h':
-			fprintf(stderr,"Usage: %s [ -h | -v | -p | -o <output_file> ]\n",argv[0]);
+			fprintf(stderr,"Usage: %s [ -h | -v | -p | -o <output_file> | -i <inputfile> | -c ]\n",argv[0]);
 			exit(0);
 		case 'v':
 			options.output_mode=VERBOSE_MODE;

@@ -51,7 +51,7 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 	token_id_t token_id;
 	int entry_idx;
 
-	if ((passwd=fopen(options.infile,"r"))==NULL) { //para ejercicio 1
+	if ((passwd=fopen(options->infile,"r"))==NULL) { //para ejercicio 1
 		fprintf(stderr, "file could not be opened: ");
 		perror(NULL);
 		return NULL;

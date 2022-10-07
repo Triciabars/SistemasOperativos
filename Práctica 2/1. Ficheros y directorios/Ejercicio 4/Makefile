@@ -2,9 +2,9 @@ SRC = $(wildcard *.c)
 TARGETS = $(SRC:%.c=%)
 
 CC = gcc
-CFLAGS = -g
-LDFLAGS =
-LIBS =
+CFLAGS = -g -O0
+LDFLAGS = -pthread
+LIBS = 
 
 all: $(TARGETS)
 

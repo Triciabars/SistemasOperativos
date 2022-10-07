@@ -3,8 +3,8 @@ TARGETS = $(SRC:%.c=%)
 
 CC = gcc
 CFLAGS = -g
-LDFLAGS = 
-LIBS = 
+LDFLAGS =
+LIBS =
 
 all: $(TARGETS)
 

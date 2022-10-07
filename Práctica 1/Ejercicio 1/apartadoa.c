@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) { 
     FILE* file=NULL;
     int c,ret;
     int buffer[10];//el buffer

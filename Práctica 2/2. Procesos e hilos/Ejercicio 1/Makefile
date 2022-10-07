@@ -17,5 +17,5 @@ $(TARGETS): %: %.o
 .PHONY: clean
 
 clean:
-	-rm $(TARGETS) $(SRC:%.c=%.o) output.txt
+	-rm $(TARGETS) $(SRC:%.c=%.o)
 

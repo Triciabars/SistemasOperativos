@@ -2,8 +2,8 @@ SRC = $(wildcard *.c)
 TARGETS = $(SRC:%.c=%)
 
 CC = gcc
-CFLAGS = -g -O0
-LDFLAGS = -pthread
+CFLAGS = -g
+LDFLAGS = 
 LIBS = 
 
 all: $(TARGETS)
@@ -17,5 +17,5 @@ $(TARGETS): %: %.o
 .PHONY: clean
 
 clean:
-	-rm $(TARGETS) $(SRC:%.c=%.o)
+	-rm $(TARGETS) $(SRC:%.c=%.o) output.txt
 

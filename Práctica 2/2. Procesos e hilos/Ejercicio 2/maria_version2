@@ -1,0 +1,26 @@
+//Ejercicio 2.2:  Creación de procesos que cumplan un grafo de dependencias.
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+/*Programa que crea N hijos siguiendo un grado de dependencias. Usa las versiones de execl y execlp*/
+int main(int argc, char **argv)
+{
+	pid_t pid;
+	pid=fork();
+	int status;
+	for(int i=0;i<8;i++){//N es 8, el número de hijos que crearemos
+		if(pid!=0){//Si es el padre
+			while(pid != wait(&status));//Espera la finalización de cualquiera de los procesos hijo
+		}
+		else{//Si es el hijo, no lo tengo claro
+			printf("Soy el hijo %d\n", getpid());
+			if(i%2==0) execlp(stdout, *argv[0]);//Dependiendo de si es par o impar se usa un proceso u otro
+			else execl(stdout, *argv[0]);
+		}
+	}
+
+	return 0;
+}

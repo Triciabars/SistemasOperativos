@@ -1,0 +1,32 @@
+//Ejercicio 2.1: Creación de procesos
+//Programa que crea dos hijos: uno no cambia de ejecutable y otro si.
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+
+
+/*Diseña un programa fork1.c(yo lo he llamado practica21.c)que cree dos procesos hijos. El primero de ellos no cambiará de ejecutable, pero el segundo sí lo hará, mediante una llamada a execvp. El programa recibirá como parámetros el nombre del ejecutable que deberá
+ejecutar y los argumentos que necesite pasarle.*/
+int main(int argc, char **argv)
+{
+	pid_t pid;
+	int status;//no recuerdo pq no se inicializa
+	pid=getpid();
+	printf("El padre es %d\n", pid);
+	//Primera llamada a fork
+	pid=fork();
+	//Si es un hijo pid será 0
+	if(pid==0){
+	printf("Soy hijo %d\n", pid); //Me entra de nuevo y no sé pq
+	execvp(stdout, *argv[0]);
+	}
+	//Si es un padre pid será distinto de 0
+	else{
+	printf("Soy padre \n");
+	while(pid != wait(&status));//Espera la finalización de cualquiera de los procesos hijo
+	}
+
+	exit (0);
+}

@@ -22,7 +22,7 @@ int main(int argc, char **argv){
 		else{ //padre del proceso hijo
 			printf("Soy el proceso padre con PID %d. Mi padre es %d Global\n", getpid(), getppid());
 			//pid_t waitpid(pid_t pid, int *status, int options);
-			if(waitpid(getpid, &status_code, ) == -1){ //esperar al pid concreto
+			if(waitpid(getpid, &status_code, WNOHANG) == -1){ //esperar al pid concreto
 					perror("waitpid");
 					exit(EXIT_FAILURE);
 				}

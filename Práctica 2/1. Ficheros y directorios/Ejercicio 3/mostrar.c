@@ -36,18 +36,19 @@ int main(int argc, char *argv[])
 
 
     //Off_t lseek(int fd (file descripter), off_t offset, int whence (posicion pointer))
-	while((opt = getopt(argc, argv, "ne:")) != -1) {   //parseamos con getopt los argumentos que se reciban
+	while((opt = getopt(argc, argv, "n:e")) != -1) {   //parseamos con getopt los argumentos que se reciban
+		//el : implica que vas a tener un valor adicional aderido a la opcion anterior (en este caso n)
 		switch(opt) {
 		case 'n': //queremos saltarnos N bytes desde el comienzo del fichero
-			fd=open(file, O_RDWR); //se abre el archivo para  leer solo
+			//fd=open(file, O_RDWR); //se abre el archivo para  leer solo
 			n=atoi(optarg); //usar conversor atoi porque optarg es siempre string
-			lseek(fd, n, SEEK_SET); //el puntero se coloca a offset bytes
+			lseek(file, n, SEEK_SET); //el puntero se coloca a offset bytes
 			break;
 		case 'e': //se leen los ultimos N bytes del fichero
 			//https://www.youtube.com/watch?v=a37WtG6KdYM
-			fd=open(file, O_RDWR); //se abre el archivo para leer solo
+			//fd=open(file, O_RDWR); //se abre el archivo para leer solo
 			n=atoi(optarg); //usar conversor atoi porque optarg es siempre string      atoi(argv[2]);
-			lseek(fdo, n, SEEK_END); //El número de bytes indicado en N se suma a la dirección actual y el puntero se coloca en la dirección resultante.
+			lseek(file, -n, SEEK_END); //El número de bytes indicado en N se suma a la dirección actual y el puntero se coloca en la dirección resultante.
 			break;
 		default: /* si n no aparece , N tomara el valor 0 */
 			

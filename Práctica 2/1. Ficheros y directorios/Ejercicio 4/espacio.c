@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 /* Forward declaration */
 int get_size_dir(char *fname, size_t *blocks);
@@ -9,7 +13,12 @@ int get_size_dir(char *fname, size_t *blocks);
  */
 int get_size(char *fname, size_t *blocks)
 {
-
+	struct stat *buf; 
+	int size = 0;
+	lstat(fname,&buf);
+	if (S_ISDIR(buf.st_mode)) size = get_size_dir(fname, blocks);
+	else size = buf.st_blocks;
+	return size;
 }
 
 
@@ -19,7 +28,23 @@ int get_size(char *fname, size_t *blocks)
  */
 int get_size_dir(char *dname, size_t *blocks)
 {
-
+	//opendir
+	//readdir
+	//ignorar . y ..
+	//closedir
+	DIR *dirp;
+	struct dirent *dp;
+	int size = 0;
+	char filename[25];
+	if ((dirp = opendir(dir)) == NULL) { perror(dir); return 0; }
+	while ((dp = readdir(dirp)) != NULL) {
+		if (!strcmp(".", dp->d_name)) continue;
+		if (!strcmp("..", dp->d_name)) continue;
+		sprintf(filename, "%s/%s", dir, dp->d_name);
+		size += get_size(filename, 512);
+	}
+    closedir(dirp);
+	return size;
 }
 
 /* Processes all the files in the command line calling get_size on them to
@@ -28,6 +53,12 @@ int get_size_dir(char *dname, size_t *blocks)
  */
 int main(int argc, char *argv[])
 {
-
+	int size = 0;
+	for(int i =0; i < argc; i++){
+		size = get_size(argv[i], 512); //size = numero de bloques de 512B
+		size = size*512/1000; //para que sean kb
+		printf("%s %d\n", i, argv[i], size); //nombre de fichero   tamaño en kb //una linea por cada fichero
+	}
+	
 	return 0;
 }

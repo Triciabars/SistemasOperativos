@@ -1,0 +1,30 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+
+void *thread_usuario(void *arg)
+{
+//Duda si mostrarlo aquí, pero no lo paso?
+printf (" Thread % ld \n " ,( long unsigned int) pthread_self ());
+printf(arg[0],arg[1]);//error?
+pthread_exit (0) ;
+
+}
+
+int main(int argc, char* argv[])//Le pasa el número de usuario y si es prioritario o no (P O N)
+{
+	//Inicializar y crear memoria dinámica, no estoy segura si aquí o en la función
+	int* num_user=(int*)malloc(sizeof(int));
+	char* priority= (char*)malloc(sizeof(char));
+	num_user=argv[0];
+	priority=argv[1];//lo de impares y pares no sé cómo funcionaría aquí
+	//Creamos el hilo
+	pthread_t thread;//Duda
+	pthread_attr_t attr ;//Duda
+	pthread_create (&thread, & attr,thread_usuario,NULL);//duda no paso argumentos?
+
+
+	 
+
+	return 0;
+}

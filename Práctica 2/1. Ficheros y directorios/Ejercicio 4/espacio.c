@@ -28,10 +28,7 @@ int get_size(char *fname, size_t *blocks)
  */
 int get_size_dir(char *dname, size_t *blocks)
 {
-	//opendir
-	//readdir
-	//ignorar . y ..
-	//closedir
+
 	DIR *dirp;
 	struct dirent *dp;
 	int size = 0;
@@ -40,7 +37,7 @@ int get_size_dir(char *dname, size_t *blocks)
 	while ((dp = readdir(dirp)) != NULL) {
 		if (!strcmp(".", dp->d_name)) continue;
 		if (!strcmp("..", dp->d_name)) continue;
-		sprintf(filename, "%s/%s", dir, dp->d_name);
+		//sprintf(filename, "%s/%s", dir, dp->d_name);
 		size += get_size(filename, 512);
 	}
     closedir(dirp);
@@ -56,9 +53,10 @@ int main(int argc, char *argv[])
 	int size = 0;
 	for(int i =0; i < argc; i++){
 		size = get_size(argv[i], 512); //size = numero de bloques de 512B
-		size = size*512/1000; //para que sean kb
+		size = size*512/1024; //para que sean kb
 		printf("%s %d\n", i, argv[i], size); //nombre de fichero   tamaño en kb //una linea por cada fichero
 	}
 	
 	return 0;
 }
+//main lstat

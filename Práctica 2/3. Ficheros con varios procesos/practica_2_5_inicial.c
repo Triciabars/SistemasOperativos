@@ -12,7 +12,7 @@ int main(void)
     char c;
     char buffer[6];
 
-    fd1 = open("output.txt", O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR);
+    fd1 = open("output.txt", O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR); //cuidado comparten punteros
     write(fd1, "00000", 5);
     for (i=1; i < 10; i++) {
         pos = lseek(fd1, 0, SEEK_CUR);

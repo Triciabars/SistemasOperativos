@@ -13,12 +13,12 @@ int get_size_dir(char *fname);
  */
 int get_size(char *fname)
 {
-	struct stat *buf; 
+	struct stat buf; 
 	int size = 0;
-	lstat(fname,buf);
-	if (S_IFDIR == *buf->st_mode) get_size_dir(fname);
+	lstat(fname,&buf);
+	if (S_IFDIR == buf.st_mode) get_size_dir(fname);
 	else {
-		size = *buf->st_blocks;
+		size = buf.st_blocks;
 		size = ((size*512)/1024); //para que sean kb
 		printf("%s --> %d K\n", fname, size); //nombre de fichero   tamaño en kb //una linea por cada fichero
 	}

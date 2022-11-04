@@ -22,13 +22,13 @@ int main(int argc, char* argv[])
 	pthread_t usuarios[N];
 
 	//Creamos el hilo
-	for (int i = 1; i =< N; i++){
+	for (int i = 1; i <= N; i++){
 	usuario *arg = (usuario *) malloc(sizeof(usuario));
 	arg->id_usuario = i;
 	arg->prioridad = i%2;
 	pthread_create (&usuarios[i-1], NULL,thread_usuario, arg);
 	}
-	for (int i = 1; i =< N; i++){
+	for (int i = 1; i <= N; i++){
 		pthread_join(&usuarios[i-1], NULL);
 	}
 

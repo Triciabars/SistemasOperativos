@@ -11,9 +11,9 @@ void copy(int fdo, int fdd)
 	int n;
 	int buffer[512];
 	do {
-		n = fread (fdo, buffer, 512) ;
+		n = read (fdo, buffer, 512) ;
 		if (n < 512) {
-			fwrite (fdd, buffer, n);
+			write (fdd, buffer, n);
 		}
 		else write (fdd, buffer, 512) ;
 	} while ( n > 0) ;
@@ -30,10 +30,10 @@ int main(int argc, char *argv[]) //recibe 2 parámetros (nom fichero origen y no
 	if(argc != 3){
 		perror ( "Introduzca el número de parametros correcto (2). <nombre fichero origen> <nombre fichero destino>");
 	}
-	if (( fdo = fopen ( argv[1] , O_RDONLY )) == -1) {
+	if (( fdo = open ( argv[1] , O_RDONLY )) == -1) {
 		perror ( " Error al abrir src ");
 	}
-	if (( fdd = fopen ( argv[2] , O_WRONLY | O_CREAT ) , 0660) == -1) {
+	if (( fdd = open ( argv[2] , O_WRONLY | O_CREAT ) , 0660) == -1) {
 		perror ( " Error al abrir dst ");
 		close ( fdo );
 	}

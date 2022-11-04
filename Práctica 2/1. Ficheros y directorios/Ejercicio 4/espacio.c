@@ -6,17 +6,17 @@
 #include <unistd.h>
 
 /* Forward declaration */
-int get_size_dir(char *fname, size_t *blocks);
+int get_size_dir(char *fname);
 
 /* Gets in the blocks buffer the size of file fname using lstat. If fname is a
  * directory get_size_dir is called to add the size of its contents.
  */
-int get_size(char *fname, size_t *blocks)
+int get_size(char *fname)
 {
 	struct stat *buf; 
 	int size = 0;
 	lstat(fname,&buf);
-	if (S_ISDIR(buf->st_mode)) size = get_size_dir(fname, blocks);
+	if (S_ISDIR(buf->st_mode)) size = get_size_dir(fname);
 	else size = buf->st_blocks;
 	return size;
 }
@@ -26,7 +26,7 @@ int get_size(char *fname, size_t *blocks)
  * a contained file is a directory a recursive call to get_size_dir is
  * performed. Entries . and .. are conveniently ignored.
  */
-int get_size_dir(char *dname, size_t *blocks)
+int get_size_dir(char *dname)
 {
 
 	DIR *dirp;
@@ -37,10 +37,9 @@ int get_size_dir(char *dname, size_t *blocks)
 	while ((dp = readdir(dirp)) != NULL) {
 		if (!strcmp(".", dp->d_name)) continue;
 		if (!strcmp("..", dp->d_name)) continue;
-		//sprintf(filename, "%s/%s", dir, dp->d_name);
-		size += get_size(filename, 512);
+		size += get_size(filename);
 	}
-    closedir(dname);
+    closedir(dirp);
 	return size;
 }
 
@@ -52,9 +51,9 @@ int main(int argc, char *argv[])
 {
 	int size = 0;
 	for(int i =0; i < argc; i++){
-		size = get_size(argv[i], 512); //size = numero de bloques de 512B
+		size = get_size(argv[i]); //size = numero de bloques de 512B
 		size = size*512/1024; //para que sean kb
-		printf("%d %s\n", i, argv[i], size); //nombre de fichero   tamaño en kb //una linea por cada fichero
+		printf("%d %s\n", argv[i], size); //nombre de fichero   tamaño en kb //una linea por cada fichero
 	}
 	
 	return 0;

@@ -41,7 +41,7 @@ int get_size_dir(char *dname)
 	while ((dp = readdir(dirp)) != NULL) {
 		if (!strcmp(".", dp->d_name)) continue;
 		if (!strcmp("..", dp->d_name)) continue;
-		size += get_size(filename);
+		size = get_size(filename);
 	}
     closedir(dirp);
 	return size;

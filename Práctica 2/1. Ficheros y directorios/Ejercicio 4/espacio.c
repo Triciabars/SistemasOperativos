@@ -15,7 +15,7 @@ int get_size(char *fname)
 {
 	struct stat *buf; 
 	int size = 0;
-	lstat(fname,&buf);
+	lstat(fname,*buf);
 	if (S_ISDIR(buf->st_mode)) size = get_size_dir(fname);
 	else size = buf->st_blocks;
 	return size;
@@ -33,7 +33,7 @@ int get_size_dir(char *dname)
 	struct dirent *dp;
 	int size = 0;
 	char filename[25];
-	if ((dirp = opendir(dname)) == NULL) { perror(dirp); return 0; }
+	if ((dirp = opendir(dname)) == NULL) { perror(dname); return 0; }
 	while ((dp = readdir(dirp)) != NULL) {
 		if (!strcmp(".", dp->d_name)) continue;
 		if (!strcmp("..", dp->d_name)) continue;
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 	for(int i =0; i < argc; i++){
 		size = get_size(argv[i]); //size = numero de bloques de 512B
 		size = size*512/1024; //para que sean kb
-		printf("%d %s\n", argv[i], size); //nombre de fichero   tamaño en kb //una linea por cada fichero
+		printf("%s %d\n", argv[i], size); //nombre de fichero   tamaño en kb //una linea por cada fichero
 	}
 	
 	return 0;

@@ -27,13 +27,13 @@ void copy(int fdo, int fdd)
 int main(int argc, char *argv[]) //recibe 2 parámetros (nom fichero origen y nom fichero destino)
 {
 	int fdo , fdd;
-	if(argc != 2){
+	if(argc != 3){
 		perror ( "Introduzca el número de parametros correcto (2). <nombre fichero origen> <nombre fichero destino>");
 	}
-	if (( fdo = open ( argv[0] , O_RDONLY )) == -1) {
+	if (( fdo = open ( argv[1] , O_RDONLY )) == -1) {
 		perror ( " Error al abrir src ");
 	}
-	if (( fdd = open ( argv[1] , O_WRONLY | O_CREAT ) , 0660) == -1) {
+	if (( fdd = open ( argv[2] , O_WRONLY | O_CREAT ) , 0660) == -1) {
 		perror ( " Error al abrir dst ");
 		close ( fdo );
 	}

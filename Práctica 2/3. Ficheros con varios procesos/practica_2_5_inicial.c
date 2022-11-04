@@ -18,10 +18,11 @@ int main(void)
         pos = lseek(fd1, 0, SEEK_CUR);
         if (fork() == 0) {
             /* Child */
+            fd2 = open("output.txt", O_CREAT | O_TRUNC | O_RDWR, S_IRUSR | S_IWUSR);
             sprintf(buffer, "%d", i*11111);
-            lseek(fd1, pos, SEEK_SET);
-            write(fd1, buffer, 5);
-            close(fd1);
+            lseek(fd2, pos, SEEK_SET);
+            write(fd2, buffer, 5);
+            close(fd2);
             exit(0);
         } else {
             /* Parent */

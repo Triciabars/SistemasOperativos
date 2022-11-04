@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) //recibe 2 parámetros (nom fichero origen y no
 	if (( fdo = open ( argv[1] , O_RDONLY )) == -1) {
 		perror ( " Error al abrir src ");
 	}
-	if (( fdd = open ( argv[2] , O_WRONLY | O_CREAT ) , 0660) == -1) {
+	if (( fdd = open ( argv[2] , O_RDWR | O_CREAT | O_TRUNC) , 7777) == -1) {
 		perror ( " Error al abrir dst ");
 		close ( fdo );
 	}

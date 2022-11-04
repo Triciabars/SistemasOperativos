@@ -27,9 +27,9 @@ int main(void)
             lseek(fd1, 5, SEEK_CUR);
              write(fd1, "00000", 5);
         }
-        close(fd1);
+        
     }
-
+    close(fd1);
 	//wait for all childs to finish
     while (wait(NULL) != -1);
 

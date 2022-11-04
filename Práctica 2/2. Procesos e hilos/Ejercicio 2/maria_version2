@@ -1,26 +1,50 @@
-//Ejercicio 2.2:  Creación de procesos que cumplan un grafo de dependencias.
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-/*Programa que crea N hijos siguiendo un grado de dependencias. Usa las versiones de execl y execlp*/
-int main(int argc, char **argv)
+/* programa que crea N hijos siguiendo un grado de dependencias. Usa las
+ * versiones de execl y execlp */
+
+int main()
 {
-	pid_t pid;
-	pid=fork();
-	int status;
-	for(int i=0;i<8;i++){//N es 8, el número de hijos que crearemos
-		if(pid!=0){//Si es el padre
-			while(pid != wait(&status));//Espera la finalización de cualquiera de los procesos hijo
+	pid_t pid_1, pid_2, pid_3, pid_4, pid_5, pid_6, pid_7, pid_8;
+	int status_code;
+	pid_1=fork();
+	printf("Soy el proceso P1\n");
+	if(waitpid(pid_1, &status_code, WNOHANG) == 0){ //esperar al pid concreto
+		pid_2=fork();
+		execl("P2","P2",NULL);
+		printf("Soy el proceso P2\n");
+		pid_5=fork();
+		execlp("P5","P5",NULL);
+		printf("Soy el proceso P5\n");
+		pid_7=fork();
+		execlp("P7","P7",NULL);
+		printf("Soy el proceso P7\n");
+		if((waitpid(pid_2, &status_code, WNOHANG) )== 0){ //esperar al pid concreto
+			pid_3=fork();
+			execlp("P3","P3",NULL);
+			printf("Soy el proceso P3\n");
+			pid_4=fork();
+			execl("P4","P4",NULL);
+			printf("Soy el proceso P4\n");
 		}
-		else{//Si es el hijo, no lo tengo claro
-			printf("Soy el hijo %d\n", getpid());
-			if(i%2==0) execlp(stdout, *argv[0]);//Dependiendo de si es par o impar se usa un proceso u otro
-			else execl(stdout, *argv[0]);
+		if((waitpid(pid_4, &status_code, WNOHANG) == 0) &&(waitpid(pid_5, &status_code, WNOHANG) == 0)){ //esperar al pid concreto
+			pid_6=fork();
+			execl("P6","P6",NULL);
+			printf("Soy el proceso P6\n");
 		}
+		if((waitpid(pid_7, &status_code, WNOHANG) == 0) &&(waitpid(pid_6, &status_code, WNOHANG) == 0)&&(waitpid(pid_3, 			&status_code, WNOHANG) == 0)){ //esperar al pid concreto
+			pid_8=fork();
+			execl("P8","P8",NULL);
+			printf("Soy el proceso P8\n");
+		}
+		
 	}
+	}
+
 
 	return 0;
 }

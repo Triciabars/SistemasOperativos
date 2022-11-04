@@ -16,7 +16,7 @@ int get_size(char *fname)
 	struct stat *buf; 
 	int size = 0;
 	lstat(fname,buf);
-	if (S_ISDIR(buf->st_mode)) size = get_size_dir(fname);
+	if (S_IFDIR == buf->st_mode) size = get_size_dir(fname);
 	else size = atoi(buf->st_blocks);
 	return size;
 }

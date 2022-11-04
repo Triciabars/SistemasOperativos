@@ -19,7 +19,6 @@ int main(void)
             /* Child */
             sprintf(buffer, "%d", i*11111);
             lseek(fd1, pos, SEEK_SET); //puntero de fd1 se posiciona en pos
-            write(fd1, "00000", 5);
             write(fd1, buffer, 5);
             close(fd1);
             exit(0); 
@@ -27,6 +26,7 @@ int main(void)
             /* Parent */
             lseek(fd1, 10, SEEK_CUR); //puntero se posiciona en donde estaba más 10
         }
+	    write(fd1, "00000", 5);
     }
 
 	//wait for all childs to finish

@@ -25,6 +25,7 @@ int main(void)
             exit(0);
         } else {
             /* Parent */
+            write(fd1, "00000", 5);
             lseek(fd1, 5, SEEK_CUR);
         }
     }

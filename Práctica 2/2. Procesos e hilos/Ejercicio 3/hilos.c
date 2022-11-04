@@ -12,7 +12,7 @@ void *thread_usuario(void *arg)
 	
 	usuario usuario_local = *((usuario *) arg);
 	free(arg);
-	printf (" Thread %d, %d,%d \n",pthread_self(), usuario_local.id_usuario, usuario_local.prioridad);
+	printf (" Thread %ld, %d,%d \n",pthread_self(), usuario_local.id_usuario, usuario_local.prioridad);
 	
 }
 
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 	pthread_create (&usuarios[i-1], NULL,thread_usuario, arg);
 	}
 	for (int i = 1; i <= N; i++){
-		pthread_join(&usuarios[i-1], NULL);
+		pthread_join(usuarios[i-1], NULL);
 	}
 
 	return 0;

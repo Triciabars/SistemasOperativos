@@ -51,9 +51,9 @@ int main(int argc, char *argv[])
 {
 	int size = 0;
 	for(int i =0; i < argc; i++){
-		size = get_size(argv[i]); //size = numero de bloques de 512B
-		size = size*512/1024; //para que sean kb
-		printf("%s %d\n", argv[i], size); //nombre de fichero   tamaño en kb //una linea por cada fichero
+		size = get_size(argv[i+1]); //size = numero de bloques de 512B
+		size = ((size*512)/1024); //para que sean kb
+		printf("%s --> %d K\n", argv[i], size); //nombre de fichero   tamaño en kb //una linea por cada fichero
 	}
 	
 	return 0;

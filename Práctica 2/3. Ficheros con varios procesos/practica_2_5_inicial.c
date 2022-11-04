@@ -21,13 +21,13 @@ int main(void)
             sprintf(buffer, "%d", i*11111);
             lseek(fd1, pos, SEEK_SET);
             write(fd1, buffer, 5);
-            close(fd1);
             exit(0);
         } else {
             /* Parent */
-            write(fd1, "00000", 5);
             lseek(fd1, 5, SEEK_CUR);
+             write(fd1, "00000", 5);
         }
+        close(fd1);
     }
 
 	//wait for all childs to finish

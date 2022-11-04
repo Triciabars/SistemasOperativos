@@ -33,14 +33,14 @@ int get_size_dir(char *dname, size_t *blocks)
 	struct dirent *dp;
 	int size = 0;
 	char filename[25];
-	if ((dirp = opendir(dirp)) == NULL) { perror(dirp); return 0; }
+	if ((dirp = opendir(dname)) == NULL) { perror(dirp); return 0; }
 	while ((dp = readdir(dirp)) != NULL) {
 		if (!strcmp(".", dp->d_name)) continue;
 		if (!strcmp("..", dp->d_name)) continue;
 		//sprintf(filename, "%s/%s", dir, dp->d_name);
 		size += get_size(filename, 512);
 	}
-    closedir(dirp);
+    closedir(dname);
 	return size;
 }
 

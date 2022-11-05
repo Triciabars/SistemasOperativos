@@ -16,7 +16,7 @@ int main(int argc, char **argv){
 
 	args=&argv[1];
 	pid=fork();//Creamos el hijo
-	execvp(argv[0], *args);//excvp
+	execvp(argv[1], *args);//excvp
 	alarm(5);
 	resultado= kill(pid, SIGKILL);
 	printf ("Enviado SIGKILL al hijo con resultado %d\n", resultado);

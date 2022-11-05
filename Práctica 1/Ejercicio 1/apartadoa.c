@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 
         if (ret==0){ //cuando se hayan escrito 0 bloques, porque significa que es el final del archivo
             fclose(file);
-            err(3,"fwrite() failed!!");
+            err(3,"fwrite() failed!!"); 
         }
     }
 

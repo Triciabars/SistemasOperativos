@@ -15,14 +15,17 @@ Una vez situado el marcador de posición, debemos leer leer byte a byte hasta el
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <err.h>
 
 
 int main(int argc, char *argv[])
 {
-    int opt, n, fd, fdo;
+    int opt, fd;
+	int buffer[100];
 	char* token;
 	FILE* file=NULL;
 	int c,ret;
+	int n = 0;
 	
 	
 	if (argc!=3) { //si han pasado menos de tres argumentos por parametro
@@ -31,9 +34,10 @@ int main(int argc, char *argv[])
 	}
 
 	 /* Open file */
-    if ((file = fopen(argv[1], "r")) == NULL)
+    file = open(argv[1], O_RDONLY); //con el open se hace con int
+	 if(file == -1){
         err(2,"The input file %s could not be opened",argv[1]);
-
+	}
 
     //Off_t lseek(int fd (file descripter), off_t offset, int whence (posicion pointer))
 	while((opt = getopt(argc, argv, "n:e")) != -1) {   //parseamos con getopt los argumentos que se reciban
@@ -57,9 +61,9 @@ int main(int argc, char *argv[])
 
 
     /* Read file byte by byte */
-    while ((c = getc(file)) != EOF) {
+    while ((c = fread(buffer, size, 1, file)) == 1) {
         /* Print byte to stdout */
-        ret=putc((unsigned char) c, stdout);
+        ret=fwrite(buffer, size, 1, stdout);
 
         if (ret==EOF){
             fclose(file);

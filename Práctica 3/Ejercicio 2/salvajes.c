@@ -33,8 +33,8 @@ void savages(void)
 {
 	for(int i=0; i<NUMITER; i++) {
 		getServingsFromPot();
-		eat();
 	}
+	eat();
 }
 
 int main(int argc, char *argv[])

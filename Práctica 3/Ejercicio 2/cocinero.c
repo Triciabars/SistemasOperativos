@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	m = sem_open("/MUTEX", O_CREAT|O_RDWR, 0700,1);
 	empty = sem_open("/EMPTY", O_CREAT|O_RDWR, 0700, 1);
 	full = sem_open("/FULL", O_CREAT|O_RDWR, 0700,0);
-	shd = shm_open("/CALDERO", O_CREAT|O_EXCL|O_RDWR, S_ISUSR | S_IWUSR); //CON OPEN() TAMBIEN DIAPO 63
+	shd = shm_open("/CALDERO", O_CREAT|O_EXCL|O_RDWR, S_IRUSR | S_IWUSR); //CON OPEN() TAMBIEN DIAPO 63
 	ftruncate(shd, sizeof(int));
 	caldero = (int*) mmap(NULL, M * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
 	*caldero = 0;

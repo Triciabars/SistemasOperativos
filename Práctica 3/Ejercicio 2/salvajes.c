@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
 	caldero = (int*) mmap(NULL, NUMITER * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
 	
 	savages();
-
-	munmap(caldero, NUMITER * sizeof(int));
 	close(shd);
+	munmap(caldero, NUMITER * sizeof(int));
+	
 	sem_close(m);
 	sem_close(empty);
 	sem_close(full);

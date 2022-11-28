@@ -43,9 +43,9 @@ int main(int argc, char *argv[])
 	*caldero = 0;
 
 	cook();
-	
-	munmap(caldero, M * sizeof(int));
 	close(shd);
+	munmap(caldero, M * sizeof(int));
+	
 	sem_close(m);
 	sem_close(empty);
 	sem_close(full);

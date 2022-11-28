@@ -4,20 +4,20 @@
 
 #define NUMITER 3
 int *caldero;
-sem_t *m, *empty, *full;
+sem_t m, empty, full;
 
 int getServingsFromPot(void)
 {
 	unsigned long id = (unsigned long) getpid();
 	sem_wait(&m);
-	if (caldero == 0) {
+	if (*caldero == 0) {
 		printf("Salvaje %d: caldero vacío\n", id);
 		sem_post(&empty);
 		sem_wait(&full);
 	}
 	printf("Salvaje %d sirviendo ración del caldero %d\n",
-			id, caldero);
-	caldero--;
+			id, *caldero);
+	*caldero--;
 	sem_post(&m);
 }
 
@@ -38,28 +38,25 @@ void savages(void)
 
 int main(int argc, char *argv[])
 {
-	int i;
-	pthread_t *tid;
+	int i, shd;
 
-	tid = malloc(NUMITER * sizeof(pthread_t));
-	if (tid == NULL){
-		perror("malloc tid");
-		exit(EXIT_FAILURE);
-	}
-
-	sem_init(&m, 0, 1);
-	sem_init(&empty, 0, 0);
-	sem_init(&full, 0, 0);
-
-	for (i = 0; i < NUMITER; i++)
-		pthread_create(&tid[i], NULL, savages, (void*) i);
-
-	for (i = 0; i < n; i++)
-		pthread_join(tid[i], NULL);
-
+	m = sem_open("/MUTEX", O_CREAT|O_RDWR, 0700,1);
+	empty = sem_open("/EMPTY", O_CREAT|O_RDWR, 0700, 1);
+	full = sem_open("/FULL", O_CREAT|O_RDWR, 0700,0);
+	shd = shm_open("/CALDERO", O_CREAT|O_EXCL|O_RDWR, S_ISUSR | S_IWUSR); //CON OPEN() TAMBIEN DIAPO 63
+	ftruncate(shd, sizeof(int));
+	caldero = (int*) mmap(NULL, M * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
 	
-	sem_destroy(&m);
-	sem_destroy(&empty);
-	sem_destroy(&full);
+	savages();
+
+	munmap(caldero, MAX_BUFFER * sizeof(int));
+	close(shd);
+	sem_close(&m);
+	sem_close(&empty);
+	sem_close(&full);
+	sem_unlink("/MUTEX");
+	sem_unlink("/EMPTY");
+	sem_unlink("/FULL");
+	shm_unlink("/CALDERO");
 	return 0;
 }

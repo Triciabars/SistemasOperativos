@@ -41,9 +41,9 @@ int main(int argc, char *argv[])
 	ftruncate(shd, sizeof(int));
 	caldero = (int*) mmap(NULL, M * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
 	*caldero = 0;
-
-	cook();
 	close(shd);
+	cook();
+	
 	munmap(caldero, M * sizeof(int));
 	
 	sem_close(m);

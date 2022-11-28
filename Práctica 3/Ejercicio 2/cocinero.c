@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 
 	cook();
 	
-	munmap(caldero, MAX_BUFFER * sizeof(int));
+	munmap(caldero, M * sizeof(int));
 	close(shd);
 	sem_close(&m);
 	sem_close(&empty);

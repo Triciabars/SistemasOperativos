@@ -8,7 +8,7 @@
 
 #define NUMITER 3
 int *caldero;
-sem_t *m, *empty, *full;
+sem_t m, empty, full;
 
 int getServingsFromPot(void)
 {

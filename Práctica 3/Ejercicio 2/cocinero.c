@@ -41,18 +41,18 @@ int main(int argc, char *argv[])
 	ftruncate(shd, sizeof(int));
 	caldero = (int*) mmap(NULL, M * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
 	*caldero = 0;
-	close(shd);
+	
 	cook();
 	
 	munmap(caldero, M * sizeof(int));
-	
+	close(shd);
+	shm_unlink("/CALDERO");
 	sem_close(m);
 	sem_close(empty);
 	sem_close(full);
 	sem_unlink("/MUTEX");
 	sem_unlink("/EMPTY");
 	sem_unlink("/FULL");
-	shm_unlink("/CALDERO");
-
+	
 	return 0;
 }

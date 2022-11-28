@@ -3,8 +3,8 @@
 #include <unistd.h>
 
 #define NUMITER 3
-int caldero = 0;
-sem_t m, empty, full;
+int *caldero;
+sem_t *m, *empty, *full;
 
 int getServingsFromPot(void)
 {

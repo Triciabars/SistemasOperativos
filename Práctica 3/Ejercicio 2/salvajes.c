@@ -15,11 +15,11 @@ int getServingsFromPot(void)
 	unsigned long id = (unsigned long) getpid();
 	sem_wait(m);
 	if (*caldero == 0) {
-		printf("Salvaje %d: caldero vacío\n", id);
+		printf("Salvaje %lu: caldero vacío\n", id);
 		sem_post(empty);
 		sem_wait(full);
 	}
-	printf("Salvaje %d sirviendo ración del caldero %d\n",
+	printf("Salvaje %lu sirviendo ración del caldero %d\n",
 			id, *caldero);
 	*caldero--;
 	sem_post(m);
@@ -49,11 +49,11 @@ int main(int argc, char *argv[])
 	full = sem_open("/FULL", O_CREAT|O_RDWR, 0700,0);
 	shd = shm_open("/CALDERO", O_CREAT|O_EXCL|O_RDWR, S_IRUSR | S_IWUSR); //CON OPEN() TAMBIEN DIAPO 63
 	ftruncate(shd, sizeof(int));
-	caldero = (int*) mmap(NULL, M * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
+	caldero = (int*) mmap(NULL, NUMITER * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
 	
 	savages();
 
-	munmap(caldero, M * sizeof(int));
+	munmap(caldero, NUMITER * sizeof(int));
 	close(shd);
 	sem_close(m);
 	sem_close(empty);

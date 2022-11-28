@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
 {
 	int i;
 	int fd;
+	pthread_t clientes;
 	fd=open(argv[1],O_CREAT | O_RDWR | O_TRUNC,0666);
 	fscanf(fd, "%d", &num_clientes);
 	if (num_clientes > CAPACITY) 

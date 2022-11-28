@@ -49,11 +49,11 @@ int main(int argc, char *argv[])
 	full = sem_open("/FULL", O_CREAT|O_RDWR, 0700,0);
 	shd = shm_open("/CALDERO", O_CREAT|O_EXCL|O_RDWR, S_IRUSR | S_IWUSR); //CON OPEN() TAMBIEN DIAPO 63
 	ftruncate(shd, sizeof(int));
-	caldero = (int*) mmap(NULL, NUMITER * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
+	caldero = (int*) mmap(NULL, 10 * sizeof(int), PROT_WRITE|PROT_READ, MAP_SHARED, shd, 0);
 	
 	savages();
 	
-	munmap(caldero, NUMITER * sizeof(int));
+	munmap(caldero, 10 * sizeof(int));
 	close(shd);
 	sem_close(m);
 	sem_close(empty);

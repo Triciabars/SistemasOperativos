@@ -8,7 +8,7 @@
 
 #define M 10
 int *caldero;
-sem_t m, empty, full;
+sem_t *m, *empty, *full;
 int finish = 0;
 
 void putServingsInPot(int servings)

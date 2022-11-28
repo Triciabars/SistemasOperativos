@@ -14,8 +14,10 @@ int finish = 0;
 void putServingsInPot(int servings)
 {
 	sem_wait(empty);
+	sem_wait(m);
 	*caldero += servings;
 	printf("Llenando caldero %d\n", *caldero);
+	sem_post(m);
 	sem_post(full);
 }
 

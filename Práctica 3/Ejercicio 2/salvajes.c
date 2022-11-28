@@ -12,23 +12,20 @@ sem_t *m, *empty, *full;
 
 int getServingsFromPot(void)
 {
-	unsigned long id = (unsigned long) getpid();
 	sem_wait(m);
 	if (*caldero == 0) {
-		printf("Salvaje %lu: caldero vacío\n", id);
+		printf("Salvaje: caldero vacío\n");
 		sem_post(empty);
 		sem_wait(full);
 	}
-	printf("Salvaje %lu sirviendo ración del caldero %d\n",
-			id, *caldero);
+	printf("Salvaje sirviendo ración del caldero %d\n", *caldero);
 	*caldero--;
 	sem_post(m);
 }
 
 void eat(void)
 {
-	unsigned long id = (unsigned long) getpid();
-	printf("Savage %lu eating\n", id);
+	printf("Savage eating\n");
 	sleep(rand() % 5);
 }
 

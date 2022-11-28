@@ -30,7 +30,7 @@ void cook(void)
 
 void handler(int signo)
 {
-	finish = 1;
+	finish = signo;
 }
 
 int main(int argc, char *argv[])

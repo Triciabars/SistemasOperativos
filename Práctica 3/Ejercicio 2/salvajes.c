@@ -6,7 +6,7 @@
 #include <sys/mman.h>
 #include <signal.h>
 
-#define NUMITER 3
+#define NUMITER 10
 int *caldero;
 sem_t *m, *empty, *full;
 

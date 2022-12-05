@@ -19,8 +19,6 @@ int getServingsFromPot(void)
 		sem_post(empty);
 		sem_wait(full);
 	}
-	sem_post(m);
-	sem_wait(m);
 	printf("Salvaje %lu sirviendo ración del caldero %d\n",
 			id, *caldero);
 	(*caldero)--;

@@ -71,16 +71,16 @@ int main(int argc, char *argv[])
 {
 
 	int i;
-	int fd;
+	FILE *fd;
 	pthread_t *clientes;
 	fd = fopen(argv[1], "r");
-	fscanf(fd, "%d", &num_clientes);
+	fscanf(fd, "%d", &num_clientes); //cogemos el num de clientes del file a partir del fscanf
 	if (num_clientes > CAPACITY)
 	{
 		fprintf(stderr, "%s", "No me pongas mas clientes que el máximo de aforo (5) por favor\n");
 		exit(EXIT_FAILURE);
 	}
-	clientes = malloc(num_clientes * sizeof(int));
+	clientes = malloc(num_clientes * sizeof(int)); //crear espacio para clientes 
 	pthread_mutex_init(&mutex, NULL);		//Mutex
 	pthread_cond_init(&hayespacio, NULL);
 	pthread_cond_init(&nohayvips, NULL);

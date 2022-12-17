@@ -33,13 +33,11 @@ void enter_vip_client(int id)
 	//Se desbloquea mutex
 	pthread_mutex_unlock(&mutex);
 }
-
 void dance(int id, int isvip)
 {
 	printf("Client %2d (%s) dancing in disco\n", id, VIPSTR(isvip));
 	sleep((rand() % 3) + 1);
 }
-
 void disco_exit(int id, int isvip)
 {
 	pthread_mutex_lock(&mutex);
@@ -47,7 +45,6 @@ void disco_exit(int id, int isvip)
 	pthread_cond_signal(&hayespacio);
 	pthread_mutex_unlock(&mutex);
 }
-
 void Cliente(int id_usuario, int is_vip)
 {
 	printf("Cliente con id [%d] es vip o no [%d] (0 no es vip 1 es vip).\n", id_usuario, is_vip);
@@ -66,21 +63,19 @@ void *client(void *arg)
 		Cliente(id_cliente, is_vip);
 	}
 }
-
 int main(int argc, char *argv[])
 {
-
 	int i;
-	FILE *fd;
+	int fd;
 	pthread_t *clientes;
 	fd = fopen(argv[1], "r");
-	fscanf(fd, "%d", &num_clientes); //cogemos el num de clientes del file a partir del fscanf
+	fscanf(fd, "%d", &num_clientes);
 	if (num_clientes > CAPACITY)
 	{
 		fprintf(stderr, "%s", "No me pongas mas clientes que el máximo de aforo (5) por favor\n");
 		exit(EXIT_FAILURE);
 	}
-	clientes = malloc(num_clientes * sizeof(int)); //crear espacio para clientes 
+	clientes = malloc(num_clientes * sizeof(int));
 	pthread_mutex_init(&mutex, NULL);		//Mutex
 	pthread_cond_init(&hayespacio, NULL);
 	pthread_cond_init(&nohayvips, NULL);
@@ -89,10 +84,10 @@ int main(int argc, char *argv[])
 		int isvip;
 		datoscliente[0] = i;
 		datoscliente[1] = fscanf(fd, "%d", &isvip);
-		if (datoscliente[1] == 1) n_clientesvip++;
+		if (datoscliente[1] == 1) 
+		n_clientesvip++;
 		pthread_create(&clientes[i], NULL, client, datoscliente);
 	}
-
 	for (i = 0; i < num_clientes; i++)
 	{
 		pthread_join(clientes[i], NULL);
@@ -101,3 +96,4 @@ int main(int argc, char *argv[])
 	return 0;
 
 }
+

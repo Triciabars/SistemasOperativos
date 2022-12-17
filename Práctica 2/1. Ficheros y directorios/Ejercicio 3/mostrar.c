@@ -18,11 +18,10 @@ Una vez situado el marcador de posición, debemos leer leer byte a byte hasta el
 #include <err.h>
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
+
     int opt, fd;
-	int buffer[100];
-	char* token;
+	char buffer[100];
 	FILE* file=NULL;
 	int c,ret;
 	int n = 0;
@@ -34,8 +33,9 @@ int main(int argc, char *argv[])
 	}
 
 	 /* Open file */
-    file = open(argv[1], O_RDONLY); //con el open se hace con int
-	 if(file == -1){
+    file = open(argv[1], O_RDONLY); //con el open se hace con int, el o_rdonly solo se lee el fichero
+	
+	if(file == -1){
         err(2,"The input file %s could not be opened",argv[1]);
 	}
 
@@ -44,26 +44,23 @@ int main(int argc, char *argv[])
 		//el : implica que vas a tener un valor adicional aderido a la opcion anterior (en este caso n)
 		switch(opt) {
 		case 'n': //queremos saltarnos N bytes desde el comienzo del fichero
-			//fd=open(file, O_RDWR); //se abre el archivo para  leer solo
 			n=atoi(optarg); //usar conversor atoi porque optarg es siempre string
 			lseek(file, n, SEEK_SET); //el puntero se coloca a offset bytes
 			break;
-		case 'e': //se leen los ultimos N bytes del fichero
-			//https://www.youtube.com/watch?v=a37WtG6KdYM
-			//fd=open(file, O_RDWR); //se abre el archivo para leer solo
+
+		case 'e': //se leen los ultimos N bytes del ficheroo
 			n=atoi(optarg); //usar conversor atoi porque optarg es siempre string      atoi(argv[2]);
 			lseek(file, -n, SEEK_END); //El número de bytes indicado en N se suma a la dirección actual y el puntero se coloca en la dirección resultante.
 			break;
-		default: /* si n no aparece , N tomara el valor 0 */
-			
-			//leer byte a byte hasta el final del fichero
-	
 
+		default: /* si n no aparece , N tomara el valor 0, ya esta inicializado a 0 asi que no hace falta ponerlo */
+		}
+	}
 
     /* Read file byte by byte */
-    while ((c = fread(buffer, size, 1, file)) == 1) {
-        /* Print byte to stdout */
-        ret=fwrite(buffer, size, 1, stdout);
+
+    while ((c = fread(buffer, 1, 1, file)) == 1) { //size_t fread(void *ptr, size_t size (tamaño de cada elemento que sea leido), size_t nmemb (numero de elementos a leer), FILE *stream)
+        ret=fwrite(&buffer, 1, 1, stdout);/* Print byte to stdout */
 
         if (ret==EOF){
             fclose(file);
@@ -73,6 +70,5 @@ int main(int argc, char *argv[])
 
 	fclose(file);
 	return 0;
-		}
-	}
+		
 }

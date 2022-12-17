@@ -3,7 +3,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <unistd.h> //para readlink
 
 void copy(int fdo, int fdd)
 {
@@ -15,11 +15,11 @@ void copy(int fdo, int fdd)
 		}
 		else write(fdd, buffer, 512);
 	} while (n > 0);
-	close(fdo);
-	close(fdd);
-	if (n < 0) {
-		perror(" Error en la copia ");
-	}
+		close(fdo);
+		close(fdd);
+		if (n < 0) {
+			perror(" Error en la copia ");
+		}
 }
 
 void copy_regular(char *orig, char *dest)
@@ -28,14 +28,24 @@ void copy_regular(char *orig, char *dest)
 }
 
 void copy_link(char *orig, char *dest){
-	int* mem;
-	size_t bufsize = 300; 
-	ssize_t result;
-	char path[250]; //array donde se guarda
+	//int* mem;
+	size_t bufsize; 
+	ssize_t buffersize, result;
+	char* buffer;
 
-	char* buf = malloc(p_statbuf.st_size + 1); //localizacion inicial del buffer
-	if((result = readlink(path, buffer,(p_statbuf.st_size + 1))))!=-1){//copiar en el buffer la ruta del fichero apuntado 
-		buf[result] = '\0';
+	buffersize = p_statbuf.st_size + 1;
+	buffer = malloc(buffersize); //localizacion inicial del buffer
+	if (buffer == NULL) {    
+        fprintf(stderr, "La aplicacion no pudo reservar memoria y se va a cerrar!\n");
+        exit(EXIT_FAILURE);
+    }
+	
+	//ssize_t readlink(const char *restrict pathname, char *restrict buf, size_t bufsiz);
+	if((result = readlink(argv[1], buffer, buffersize))!=-1){//copiar en el buffer la ruta del fichero apuntado 
+		if(result==-1){
+			perror("readlink");
+			exit(EXIT_FAILURE);
+		}
 	}
 
 	if(symlink(orig, dest)!=0){ //creando el enlace de dest que apunte tambien a origen
@@ -46,13 +56,15 @@ void copy_link(char *orig, char *dest){
 		unlink(orig);
 		unlink(dest);
 	}
-	//free(mem); //liberar la memoria reservada
+	free(buffer); //liberar la memoria reservada
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
+	
 	int fdo, fdd, type, size;
 	int buffer[512];
+	//ver si es un enlace simbolico con lstat
+	struct stat p_statbuf;
 
 	if (argc != 3) {
 		perror("Introduzca el número de parametros correcto (2). <nombre fichero origen> <nombre fichero destino>");
@@ -65,9 +77,7 @@ int main(int argc, char *argv[])
 		close(fdo);
 	}
 
-	//ver si es un enlace simbolico con lstat
-	struct stat p_statbuf;
-
+	//comprobar tipo de enlace del fichero origen --> int lstat(const char *path, struct stat *buf)
     if (lstat(argv[1], &p_statbuf) < 0) {  /* if error occured */
         perror("No se pudo llamar a lstat");
         exit(1);  /* end progam here */
@@ -76,7 +86,7 @@ int main(int argc, char *argv[])
     if (S_ISLNK(p_statbuf.st_mode) == 1) { //es un enlace simbolico
        copy_link(argv[1], argv[2]);
     } 
-	if (S_ISREG(p_statbuf.st_mode) == 1) { //es un enlace regular, se copia normal
+	else if (S_ISREG(p_statbuf.st_mode) == 1) { //es un enlace regular, se copia normal
         copy(fdo, fdd);
 	}
 	else { 
@@ -84,8 +94,5 @@ int main(int argc, char *argv[])
         exit(1);  /* end progam here */
     }
 
-
-
-	
 	return 0;
 }

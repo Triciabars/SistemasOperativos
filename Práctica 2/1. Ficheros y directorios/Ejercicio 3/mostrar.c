@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
 
     /* Read file byte by byte */
 
-    while ((c = fread(buffer, 1, 1, file)) == 1) { //size_t fread(void *ptr, size_t size (tamaño de cada elemento que sea leido), size_t nmemb (numero de elementos a leer), FILE *stream)
+    while ((c = fread(&buffer, 1, 1, file)) == 1) { //size_t fread(void *ptr, size_t size (tamaño de cada elemento que sea leido), size_t nmemb (numero de elementos a leer), FILE *stream)
         ret=fwrite(&buffer, 1, 1, stdout);/* Print byte to stdout */
 
         if (ret==EOF){

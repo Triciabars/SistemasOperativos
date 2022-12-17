@@ -38,6 +38,7 @@ void copy_link(char *orig, char *dest){
 	if (buffer == NULL) {    
         fprintf(stderr, "La aplicacion no pudo reservar memoria y se va a cerrar!\n");
         exit(EXIT_FAILURE);
+		//añadir el null 
     }
 	
 	//ssize_t readlink(const char *restrict pathname, char *restrict buf, size_t bufsiz);
@@ -45,6 +46,7 @@ void copy_link(char *orig, char *dest){
 		if(result==-1){
 			perror("readlink");
 			exit(EXIT_FAILURE);
+
 		}
 	}
 

@@ -42,7 +42,7 @@ void copy_link(char *orig, char *dest){
     }
 	
 	//ssize_t readlink(const char *restrict pathname, char *restrict buf, size_t bufsiz);
-	if((result = readlink(argv[1], buffer, buffersize))!=-1){//copiar en el buffer la ruta del fichero apuntado 
+	if((result = readlink(orig, buffer, buffersize))!=-1){//copiar en el buffer la ruta del fichero apuntado 
 		if(result==-1){
 			perror("readlink");
 			exit(EXIT_FAILURE);

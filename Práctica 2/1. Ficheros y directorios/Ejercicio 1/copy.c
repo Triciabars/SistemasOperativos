@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <unistd.h> //para el write y read ssize_t write(int fd, const void *buf, size_t count);	
+#include <fcntl.h> //para el open		int open(const char *pathname, int flags);
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
@@ -30,10 +30,10 @@ int main(int argc, char *argv[]) //recibe 2 parámetros (nom fichero origen y no
 	if(argc != 3){
 		perror ( "Introduzca el número de parametros correcto (2). <nombre fichero origen> <nombre fichero destino>");
 	}
-	if (( fdo = open ( argv[1] , O_RDONLY )) == -1) {
+	if (( fdo = open ( argv[1] , O_RDONLY )) == -1) {  //si da error al solo leer
 		perror ( " Error al abrir src ");
 	}
-	if (( fdd = open ( argv[2] , O_RDWR | O_CREAT ) , 7777) == -1) {
+	if (( fdd = open ( argv[2] , O_RDWR | O_CREAT ) , 7777) == -1) {  //son los permisos para que todos puedan acceder
 		perror ( " Error al abrir dst ");
 		close ( fdo );
 	}
@@ -56,3 +56,15 @@ nombre elegido para el fichero destino y comprobar que el contenido anterior des
 Para comprobar el funcionamiento correcto de nuestro programa podemos usar los comandos de shell diff y hexdump
 (este último para ficheros binarios).
 */
+
+
+/*dar permisos: va del 0 al 7
+0 (ficheros regulares) 0 (permisos del propio individuo) 0(grupo)  0 (todo el mundo)*/
+
+
+/*O_RDONLY: Open for reading only.
+O_WRONLY: Open for writing only.
+O_RDWR: Open for reading and writing. The result is undefined if this flag is applied to a FIFO.
+
+O_APPEND: If set, the file offset will be set to the end of the file prior to each write.
+O_CREAT: If pathname does not exist, create it as a regular file. The owner (user ID) of the new file is set to the effective user ID of the process.*/

@@ -28,11 +28,16 @@ void copy_regular(char *orig, char *dest)
 }
 
 void copy_link(char *orig, char *dest){
-	//int* mem;
 	size_t bufsize; 
-	ssize_t buffersize, result;
+	ssize_t buffersize;
 	char* buffer;
 
+	struct stat p_statbuf;	
+
+	//otra vez, identificar caracteristicas del archivo
+	lstat(orig, &p_statbuf);
+
+	//reservamos memoria e inicializamos el buffer
 	buffersize = p_statbuf.st_size + 1;
 	buffer = malloc(buffersize); //localizacion inicial del buffer
 	if (buffer == NULL) {    
@@ -42,22 +47,11 @@ void copy_link(char *orig, char *dest){
     }
 	
 	//ssize_t readlink(const char *restrict pathname, char *restrict buf, size_t bufsiz);
-	if((result = readlink(orig, buffer, buffersize))!=-1){//copiar en el buffer la ruta del fichero apuntado 
-		if(result==-1){
-			perror("readlink");
-			exit(EXIT_FAILURE);
-
-		}
-	}
-
-	if(symlink(orig, dest)!=0){ //creando el enlace de dest que apunte tambien a origen
-		perror("error en symlink()");
-		unlink(orig);
-	}
-	else{
-		unlink(orig);
-		unlink(dest);
-	}
+	readlink(orig, buffer, buffersize);//copiar en el buffer la ruta del fichero apuntado 
+	buffer[buffersize-1]='\0';
+	
+	symlink(buffer, dest); //creando el enlace de dest que apunte tambien a origen
+	
 	free(buffer); //liberar la memoria reservada
 }
 

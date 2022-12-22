@@ -11,6 +11,11 @@ int num_clientes, n_clientesvip;
 pthread_mutex_t mutex;
 pthread_cond_t nohayvips, hayespacio;
 
+typedef struct{
+	int id;
+	int isvip;
+}client_datos;
+
 void enter_normal_client(int id)
 {
 	pthread_mutex_lock(&mutex);
@@ -45,54 +50,57 @@ void disco_exit(int id, int isvip)
 	pthread_cond_signal(&hayespacio);
 	pthread_mutex_unlock(&mutex);
 }
-void Cliente(int id_usuario, int is_vip)
-{
-	printf("Cliente con id [%d] es vip o no [%d] (0 no es vip 1 es vip).\n", id_usuario, is_vip);
-	if (is_vip == 1)	enter_vip_client(id_usuario);
-	else enter_normal_client(id_usuario);
-	dance(id_usuario, is_vip);
-	disco_exit(id_usuario, is_vip);
-}
 
-void *client(void *arg)
-{
-	while (1)
-	{
-		int id_cliente = (int)arg; // obtener el id del usario
-		int is_vip = (int)arg;
-		Cliente(id_cliente, is_vip);
-	}
+
+void *client(void *arg){ //el argumento que le pasamos es la estructura
+
+	client_datos *datoscliente2 = (client_datos *) arg;
+	
+	//printf("Cliente con id [%d] es vip o no [%d] (0 no es vip 1 es vip).\n", datoscliente2->id, datoscliente2->is_vip);
+	if (datoscliente2->is_vip == 1)	enter_vip_client(datoscliente2->id);
+	else enter_normal_client(datoscliente2->id);
+	dance(datoscliente2->id, datoscliente2->is_vip);
+	disco_exit(datoscliente2->id, datoscliente2->is_vip);
+	
 }
-int main(int argc, char *argv[])
-{
-	int i;
-	int fd;
-	pthread_t *clientes;
-	fd = fopen(argv[1], "r");
-	fscanf(fd, "%d", &num_clientes);
-	if (num_clientes > CAPACITY)
-	{
+int main(int argc, char *argv[]){
+	
+	//Initialize values
+	int i, isvip;
+	FILE *fs;
+	client_datos *datoscliente;
+	pthread_t *clientes;	
+
+	//Open file and read number of clients
+	fs = fopen(argv[1], "r");
+	fscanf(fs, "%d", &num_clientes);
+
+	//Check capacity
+	if (num_clientes > CAPACITY){
 		fprintf(stderr, "%s", "No me pongas mas clientes que el máximo de aforo (5) por favor\n");
 		exit(EXIT_FAILURE);
 	}
-	clientes = malloc(num_clientes * sizeof(int));
+
+	clientes = malloc(num_clientes * sizeof(pthread_t));
 	pthread_mutex_init(&mutex, NULL);		//Mutex
 	pthread_cond_init(&hayespacio, NULL);
 	pthread_cond_init(&nohayvips, NULL);
+
 	for (i = 0; i < num_clientes; i++) {
-		int* datoscliente;
-		int isvip;
-		datoscliente[0] = i;
-		datoscliente[1] = fscanf(fd, "%d", &isvip);
-		if (datoscliente[1] == 1) 
-		n_clientesvip++;
+		datoscliente = malloc(sizeof(client_datos));
+		fscanf(fs, "%d\n", &isvip); //\n es para ver que se lea el siguiente
+		
+		datoscliente->id = i;
+		datoscliente->isvip = isvip;
+		
 		pthread_create(&clientes[i], NULL, client, datoscliente);
 	}
-	for (i = 0; i < num_clientes; i++)
-	{
+
+	for (i = 0; i < num_clientes; i++){
 		pthread_join(clientes[i], NULL);
 	}
-	fclose(fd);
+
+	fclose(fs);
 	return 0;
 
 }
